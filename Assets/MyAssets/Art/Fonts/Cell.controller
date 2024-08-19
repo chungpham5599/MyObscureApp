@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: Flipped
+    m_ConditionEvent: Flip
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6330407204938372822}
@@ -114,7 +114,7 @@ AnimatorController:
   m_Name: Cell
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Flipped
+  - m_Name: Flip
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -174,7 +174,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Flipped
+    m_ConditionEvent: Flip
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8835384404592136613}

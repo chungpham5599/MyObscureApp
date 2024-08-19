@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Cell : MonoBehaviour
 {
     private int m_id;
-    private bool m_isShow;
+    private bool m_isRevealed;
     private Animator m_anim;
 
     [SerializeField] private Sprite frontBG;
@@ -22,6 +22,7 @@ public class Cell : MonoBehaviour
     private void Awake()
     {
         m_anim = GetComponent<Animator>();
+        m_isRevealed = false;
     }
 
     public void SetIcon(Sprite _icon)
@@ -30,6 +31,36 @@ public class Cell : MonoBehaviour
             iconBG.sprite = backBG;
 
         if (icon)
+        {
             icon.sprite = _icon;
+            icon.gameObject.SetActive(false);
+        }    
+    }
+
+    public void ChangeState()
+    {
+        m_isRevealed = !m_isRevealed;
+
+        if (iconBG)
+            iconBG.sprite = m_isRevealed ? frontBG : backBG;
+
+        if (icon)
+            icon.gameObject.SetActive(m_isRevealed);
+    }
+
+    public void runRevealAnim()
+    {
+        if (m_anim)
+            m_anim.SetBool(AnimState.Flip.ToString(), true);
+    }
+    public void runExploreAnim()
+    {
+        if (m_anim)
+            m_anim.SetBool(AnimState.Explored.ToString(), true);
+    }
+    public void runIdleAnim()
+    {
+        if (m_anim)
+            m_anim.SetBool(AnimState.Flip.ToString(), false);
     }
 }

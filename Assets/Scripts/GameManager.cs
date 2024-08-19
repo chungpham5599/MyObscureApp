@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
                 {
                     m_cellSelected.Add(cellClone);
                     //TODO: run anim reveal
+                    cellClone.runRevealAnim();
                     if (m_cellSelected.Count >= 2)
                     {
                         StartCoroutine(CheckPairCo());
@@ -130,23 +131,27 @@ public class GameManager : MonoBehaviour
             if (isMatch)
             {
                 m_currentCorrectPair++;
-                for (int i = 0;i < m_cellSelected.Count;i++)
+                // check only the first 2 selected
+                for (int i = 0;i < 2;i++)
                 {
                     Cell cell = m_cellSelected[i];
                     if (cell != null)
                     {
                         //TODO: run anim explore
+                        cell.runExploreAnim();
                     }
                 }
             }
             else
             {
-                for (int i = 0; i < m_cellSelected.Count; i++)
+                // check only the first 2 selected
+                for (int i = 0; i < 2; i++)
                 {
                     Cell cell = m_cellSelected[i];
                     if (cell != null)
                     {
                         //TODO: run anim FLIP back
+                        cell.runRevealAnim();
                         cell.button.enabled = true;
                     }
                 }

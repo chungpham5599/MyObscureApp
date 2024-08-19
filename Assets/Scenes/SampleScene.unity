@@ -3936,7 +3936,7 @@ MonoBehaviour:
   - icon: {fileID: 21300000, guid: c70e036fb1f5ca5459fc1504b9992010, type: 3}
   - icon: {fileID: 21300000, guid: e45dbec533b82b3468bcb9d0ecde8c56, type: 3}
   - icon: {fileID: 21300000, guid: cf518712daf6ad243850101f04b755b4, type: 3}
-  cellPref: {fileID: 8328740800849854214, guid: c1082bbbf7fa4094f98e7ccc5f16f955, type: 3}
+  cellPref: {fileID: -3840712002698063586, guid: c1082bbbf7fa4094f98e7ccc5f16f955, type: 3}
   grid: {fileID: 29924152}
   gameState: 0
 --- !u!1 &1646039308
