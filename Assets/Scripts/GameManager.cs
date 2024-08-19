@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
                     m_cellSelected.Add(cellClone);
                     //TODO: run anim reveal
                     cellClone.runRevealAnim();
-                    if (m_cellSelected.Count >= 2)
+                    if (m_cellSelected.Count >= 2 && m_cellSelected.Count % 2 == 0)
                     {
                         StartCoroutine(CheckPairCo());
                     }
@@ -122,44 +122,41 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CheckPairCo()
     {
-        bool isMatch = m_cellSelected[0] != null && m_cellSelected[1] != null && m_cellSelected[0].Id == m_cellSelected[1].Id;
-
         yield return new WaitForSeconds(1f);
 
-        if (m_cellSelected != null && m_cellSelected.Count >= 2)
-        {
-            if (isMatch)
-            {
-                m_currentCorrectPair++;
-                // check only the first 2 selected
-                for (int i = 0;i < 2;i++)
-                {
-                    Cell cell = m_cellSelected[i];
-                    if (cell != null)
-                    {
-                        //TODO: run anim explore
-                        cell.runExploreAnim();
-                    }
-                }
-            }
-            else
-            {
-                // check only the first 2 selected
-                for (int i = 0; i < 2; i++)
-                {
-                    Cell cell = m_cellSelected[i];
-                    if (cell != null)
-                    {
-                        //TODO: run anim FLIP back
-                        cell.runRevealAnim();
-                        cell.button.enabled = true;
-                    }
-                }
-            }
+        bool isMatch = m_cellSelected[0] != null && m_cellSelected[1] != null && m_cellSelected[0].Id == m_cellSelected[1].Id;
 
-            m_cellSelected.RemoveAt(0);
-            m_cellSelected.RemoveAt(0);
+        if (isMatch)
+        {
+            m_currentCorrectPair++;
+            // check only the first 2 selected
+            for (int i = 0;i < 2;i++)
+            {
+                Cell cell = m_cellSelected[i];
+                if (cell != null)
+                {
+                    //TODO: run anim explore
+                    cell.runExploreAnim();
+                }
+            }
         }
+        else
+        {
+            // check only the first 2 selected
+            for (int i = 0; i < 2; i++)
+            {
+                Cell cell = m_cellSelected[i];
+                if (cell != null)
+                {
+                    //TODO: run anim FLIP back
+                    cell.runRevealAnim();
+                    cell.button.enabled = true;
+                }
+            }
+        }
+
+        m_cellSelected.RemoveAt(0);
+        m_cellSelected.RemoveAt(0);
 
         // check game win
         if (m_currentCorrectPair*2 == m_totalCellNum)
