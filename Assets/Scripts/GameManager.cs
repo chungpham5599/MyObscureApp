@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,17 +35,17 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        GenerateGrid(2, 2);
+        GenerateGrid(3, 4);
     }
 
-    public void GenerateGrid(int width, int height)
+    public void GenerateGrid(int row, int col)
     {
-        m_totalCellNum = width * height;
+        m_totalCellNum = row * col;
 
         for (int i = 0; i < m_totalCellNum / 2; i++)
         {
             //pick one random icon
-            var random = Random.Range(0, cellItems.Length);
+            int random = Random.Range(0, cellItems.Length);
             m_totalCell.Add(cellItems[random]); 
             m_totalCell.Add(cellItems[random]);
         }
@@ -54,13 +55,18 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < m_totalCell.Count; i++)
         {
-            var cell = m_totalCell[i];
+            CellItem cell = m_totalCell[i];
 
-            var cellClone = Instantiate(cellPref, Vector3.zero, Quaternion.identity);
+            GameObject cellClone = Instantiate(cellPref, Vector3.zero, Quaternion.identity);
             cellClone.transform.SetParent(grid);
             cellClone.transform.localPosition = Vector3.zero;
             cellClone.transform.localScale = Vector3.one;
         }
+        Vector2 containerSize = grid.GetComponent<RectTransform>().rect.size;
+        Vector2 spacing = new Vector2(20,20);
+        Vector2 cellSize = new Vector2(containerSize.x / col - spacing.x, containerSize.y / row - spacing.y);
+        grid.GetComponent<GridLayoutGroup>().cellSize = cellSize;
+        grid.GetComponent<GridLayoutGroup>().spacing = spacing;
     }
 
     private void ClearGrid()
