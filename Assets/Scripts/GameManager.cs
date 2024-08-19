@@ -9,13 +9,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public CellItem[] cellItems;
-    public GameObject cellPref;
+    public Cell cellPref;
     public Transform grid;
     [SerializeField]
 
     public GameState gameState;
-    private List<GameObject> m_cellPref1;
-    private List<GameObject> m_cellPref2;
+    private List<Cell> m_cellPref1;
+    private List<Cell> m_cellPref2;
     private int m_totalCellNum;
     private List<CellItem> m_totalCell;
 
@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
         else
             Instace = this;
 
-        m_cellPref1 = new List<GameObject>();
-        m_cellPref2 = new List<GameObject>();
+        m_cellPref1 = new List<Cell>();
+        m_cellPref2 = new List<Cell>();
         m_totalCell = new List<CellItem>();
 
         gameState = GameState.Playing;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        GenerateGrid(3, 4);
+        GenerateGrid(5, 6);
     }
 
     public void GenerateGrid(int row, int col)
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
             int random = Random.Range(0, cellItems.Length);
             m_totalCell.Add(cellItems[random]); 
             m_totalCell.Add(cellItems[random]);
+            cellItems[random].Id = random;
         }
 
         ShuffleCells();
@@ -57,10 +58,12 @@ public class GameManager : MonoBehaviour
         {
             CellItem cell = m_totalCell[i];
 
-            GameObject cellClone = Instantiate(cellPref, Vector3.zero, Quaternion.identity);
+            var cellClone = Instantiate(cellPref, Vector3.zero, Quaternion.identity);
             cellClone.transform.SetParent(grid);
             cellClone.transform.localPosition = Vector3.zero;
             cellClone.transform.localScale = Vector3.one;
+            cellClone.SetIcon(cell.icon);
+            cellClone.Id = cell.Id;
         }
         Vector2 containerSize = grid.GetComponent<RectTransform>().rect.size;
         Vector2 spacing = new Vector2(20,20);
