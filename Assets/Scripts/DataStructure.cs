@@ -16,7 +16,7 @@ public enum GameState
     Menu,
     Playing,
     GameOver,
-    Finish
+    LevelComplete
 }
 
 public enum AnimState

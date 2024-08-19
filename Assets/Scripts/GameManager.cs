@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private int m_currentCorrectPair;
     private List<CellItem> m_totalCell;
     private float m_timeCount;
-    private float timeLimit;
+    private float m_timeLimit;
 
     private void Awake()
     {
@@ -48,14 +48,19 @@ public class GameManager : MonoBehaviour
         {
             gameState = GameState.GameOver;
             m_timeCount = 0;
-            Debug.Log("Game Over");
+            if (ScreenManager.Instace)
+                ScreenManager.Instace.GameoverDialog.Show(true);
         }
+
+        if (ScreenManager.Instace)
+            ScreenManager.Instace.UpdateTimeProgress((float)m_timeCount, (float)m_timeLimit);
     }
 
     public void GenerateLevel(int row, int col, int _timeLimit)
     {
         gameState = GameState.Playing;
         m_timeCount = _timeLimit;
+        m_timeLimit = _timeLimit;
         m_totalCellNum = row * col;
 
         for (int i = 0; i < m_totalCellNum / 2; i++)
@@ -176,7 +181,9 @@ public class GameManager : MonoBehaviour
         // check game win
         if (m_currentCorrectPair*2 == m_totalCellNum)
         {
-            Debug.Log("Game Win!");
+            gameState = GameState.LevelComplete;
+            if (ScreenManager.Instace)
+                ScreenManager.Instace.LevelCompleteDialog.Show(true);
         }
     }
 }

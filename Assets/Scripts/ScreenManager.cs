@@ -13,6 +13,10 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private Button button5x6;
     [SerializeField] private GameObject mainMenuScreen;
     [SerializeField] private GameObject gameplayScreen;
+    [SerializeField] private Image timeBar;
+    [SerializeField] public PauseDialog PauseDialog;
+    [SerializeField] public GameOverDialog GameoverDialog;
+    [SerializeField] public LevelCompleteDialog LevelCompleteDialog;
 
     public void Awake()
     {
@@ -48,5 +52,12 @@ public class ScreenManager : MonoBehaviour
 
         if (mainMenuScreen)
             mainMenuScreen.SetActive(!isGameplayScreen);
+    }
+
+    public void UpdateTimeProgress(float curr, float total)
+    {
+        float rate = curr / total;
+        if (timeBar)
+            timeBar.fillAmount = rate;
     }
 }
