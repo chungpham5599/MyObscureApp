@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
 
     public GameState gameState;
-    private List<Cell> m_cellPref1;
-    private List<Cell> m_cellPref2;
+    private List<Cell> m_cellSelected;
     private int m_totalCellNum;
+    private int m_currentCorrectPair;
     private List<CellItem> m_totalCell;
 
     private void Awake()
@@ -26,16 +26,17 @@ public class GameManager : MonoBehaviour
         else
             Instace = this;
 
-        m_cellPref1 = new List<Cell>();
-        m_cellPref2 = new List<Cell>();
+        gameState = GameState.Playing;
+        m_cellSelected = new List<Cell>();
+        m_totalCellNum = 0;
+        m_currentCorrectPair = 0;
         m_totalCell = new List<CellItem>();
 
-        gameState = GameState.Playing;
     }
 
     public void Start()
     {
-        GenerateGrid(5, 6);
+        GenerateGrid(3, 4);
     }
 
     public void GenerateGrid(int row, int col)
@@ -62,8 +63,26 @@ public class GameManager : MonoBehaviour
             cellClone.transform.SetParent(grid);
             cellClone.transform.localPosition = Vector3.zero;
             cellClone.transform.localScale = Vector3.one;
+
+            // update icon arcording to its ID
             cellClone.SetIcon(cell.icon);
             cellClone.Id = cell.Id;
+
+            // bind event handler
+            if (cellClone.button)
+            {
+                cellClone.button.onClick.RemoveAllListeners();
+                cellClone.button.onClick.AddListener(() =>
+                {
+                    m_cellSelected.Add(cellClone);
+                    //TODO: run anim reveal
+                    if (m_cellSelected.Count >= 2)
+                    {
+                        StartCoroutine(CheckPairCo());
+                    }
+                    cellClone.button.enabled = false;
+                });
+            }
         }
         Vector2 containerSize = grid.GetComponent<RectTransform>().rect.size;
         Vector2 spacing = new Vector2(20,20);
@@ -97,6 +116,50 @@ public class GameManager : MonoBehaviour
                 m_totalCell[i] = m_totalCell[randomID];
                 m_totalCell[randomID] = temp;
             }
+        }
+    }
+
+    private IEnumerator CheckPairCo()
+    {
+        bool isMatch = m_cellSelected[0] != null && m_cellSelected[1] != null && m_cellSelected[0].Id == m_cellSelected[1].Id;
+
+        yield return new WaitForSeconds(1f);
+
+        if (m_cellSelected != null && m_cellSelected.Count >= 2)
+        {
+            if (isMatch)
+            {
+                m_currentCorrectPair++;
+                for (int i = 0;i < m_cellSelected.Count;i++)
+                {
+                    Cell cell = m_cellSelected[i];
+                    if (cell != null)
+                    {
+                        //TODO: run anim explore
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m_cellSelected.Count; i++)
+                {
+                    Cell cell = m_cellSelected[i];
+                    if (cell != null)
+                    {
+                        //TODO: run anim FLIP back
+                        cell.button.enabled = true;
+                    }
+                }
+            }
+
+            m_cellSelected.RemoveAt(0);
+            m_cellSelected.RemoveAt(0);
+        }
+
+        // check game win
+        if (m_currentCorrectPair*2 == m_totalCellNum)
+        {
+            Debug.Log("Game Win!");
         }
     }
 }

@@ -14,7 +14,7 @@ public class Cell : MonoBehaviour
     [SerializeField] private Sprite backBG;
     [SerializeField] private Image iconBG;
     [SerializeField] private Image icon;
-    [SerializeField]  private Button button;
+    [SerializeField] public Button button;
     
 
     public int Id { get => m_id; set => m_id = value; }
