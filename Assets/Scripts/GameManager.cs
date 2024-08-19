@@ -7,17 +7,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instace { get; private set; }
 
-    [SerializeField]
-    public CellItem[] cellItems;
-    public Cell cellPref;
-    public Transform grid;
-    [SerializeField]
+    [SerializeField] private CellItem[] cellItems;
+    [SerializeField] private Cell cellPref;
+    [SerializeField] private Transform grid;
 
     public GameState gameState;
     private List<Cell> m_cellSelected;
     private int m_totalCellNum;
     private int m_currentCorrectPair;
     private List<CellItem> m_totalCell;
+    private float m_timeCount;
+    private float timeLimit;
 
     private void Awake()
     {
@@ -26,21 +26,36 @@ public class GameManager : MonoBehaviour
         else
             Instace = this;
 
-        gameState = GameState.Playing;
         m_cellSelected = new List<Cell>();
         m_totalCellNum = 0;
         m_currentCorrectPair = 0;
         m_totalCell = new List<CellItem>();
+        //m_timeCount = timeLimit;
 
     }
 
     public void Start()
     {
-        GenerateGrid(3, 4);
     }
 
-    public void GenerateGrid(int row, int col)
+    public void Update()
     {
+        if (gameState != GameState.Playing) return;
+
+        m_timeCount -= Time.deltaTime;
+
+        if (m_timeCount <= 0 && gameState != GameState.GameOver)
+        {
+            gameState = GameState.GameOver;
+            m_timeCount = 0;
+            Debug.Log("Game Over");
+        }
+    }
+
+    public void GenerateLevel(int row, int col, int _timeLimit)
+    {
+        gameState = GameState.Playing;
+        m_timeCount = _timeLimit;
         m_totalCellNum = row * col;
 
         for (int i = 0; i < m_totalCellNum / 2; i++)
