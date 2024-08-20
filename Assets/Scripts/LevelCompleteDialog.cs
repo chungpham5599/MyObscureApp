@@ -10,6 +10,10 @@ public class LevelCompleteDialog : MonoBehaviour
     [SerializeField] private Text bestScore;
     public void Show(bool isShow)
     {
+        //sound sfx flip
+        if (AudioManager.Instace)
+            AudioManager.Instace.PlaySFX(AudioManager.Instace.gameover);
+
         gameObject.SetActive(isShow);
 
         if (score && GameManager.Instace)

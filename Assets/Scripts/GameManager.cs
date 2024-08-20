@@ -104,6 +104,11 @@ public class GameManager : MonoBehaviour
                 cellClone.button.onClick.AddListener(() =>
                 {
                     m_cellSelected.Add(cellClone);
+                    
+                    //sound sfx flip
+                    if (AudioManager.Instace)
+                        AudioManager.Instace.PlaySFX(AudioManager.Instace.flip);
+
                     //TODO: run anim reveal
                     cellClone.runRevealAnim();
                     if (m_cellSelected.Count >= 2 && m_cellSelected.Count % 2 == 0)
@@ -164,6 +169,9 @@ public class GameManager : MonoBehaviour
                 Cell cell = m_cellSelected[i];
                 if (cell != null)
                 {
+                    //sound sfx right match
+                    if (AudioManager.Instace)
+                        AudioManager.Instace.PlaySFX(AudioManager.Instace.right);
                     //TODO: run anim explore
                     cell.runExploreAnim();
                 }
@@ -177,6 +185,12 @@ public class GameManager : MonoBehaviour
                 Cell cell = m_cellSelected[i];
                 if (cell != null)
                 {
+                    //sound sfx flip 
+                    if (AudioManager.Instace)
+                    {
+                        AudioManager.Instace.PlaySFX(AudioManager.Instace.flip);
+                        AudioManager.Instace.PlaySFX(AudioManager.Instace.wrong);
+                    }
                     //TODO: run anim FLIP back
                     cell.runRevealAnim();
                     cell.button.enabled = true;

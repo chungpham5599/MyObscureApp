@@ -7,6 +7,9 @@ public class GameOverDialog : MonoBehaviour
 {
     public void Show(bool isShow)
     {
+        //sound sfx flip
+        if (AudioManager.Instace)
+            AudioManager.Instace.PlaySFX(AudioManager.Instace.gameover);
         gameObject.SetActive(isShow);
     }
     public void BackToMainMenu()

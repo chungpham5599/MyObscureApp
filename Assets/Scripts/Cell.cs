@@ -55,6 +55,8 @@ public class Cell : MonoBehaviour
     }
     public void runExploreAnim()
     {
+        if (AudioManager.Instace)
+            AudioManager.Instace.PlaySFX(AudioManager.Instace.right);
         if (m_anim)
             m_anim.SetBool(AnimState.Explored.ToString(), true);
     }
