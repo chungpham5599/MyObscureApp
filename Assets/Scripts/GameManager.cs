@@ -11,7 +11,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Cell cellPref;
     [SerializeField] private Transform grid;
 
+    /*static variable doesn't get destroyed on sceneloading*/
+    public static int g_row;
+    public static int g_col;
+    public static float g_timeLimit;
+    
     public GameState gameState;
+    public int score;
+    public int bestScore;
     private List<Cell> m_cellSelected;
     private int m_totalCellNum;
     private int m_currentCorrectPair;
@@ -30,7 +37,6 @@ public class GameManager : MonoBehaviour
         m_totalCellNum = 0;
         m_currentCorrectPair = 0;
         m_totalCell = new List<CellItem>();
-        //m_timeCount = timeLimit;
 
     }
 
@@ -56,8 +62,11 @@ public class GameManager : MonoBehaviour
             ScreenManager.Instace.UpdateTimeProgress((float)m_timeCount, (float)m_timeLimit);
     }
 
-    public void GenerateLevel(int row, int col, int _timeLimit)
+    public void GenerateLevel(int row, int col, float _timeLimit)
     {
+        // this doesn't get destroyed on Load
+        g_row = row; g_col = col; g_timeLimit = _timeLimit;
+
         gameState = GameState.Playing;
         m_timeCount = _timeLimit;
         m_timeLimit = _timeLimit;
@@ -181,9 +190,23 @@ public class GameManager : MonoBehaviour
         // check game win
         if (m_currentCorrectPair*2 == m_totalCellNum)
         {
+            // scoring
+            score = (int)Mathf.Ceil(m_timeCount);
+            if (score > bestScore)
+                bestScore = score;
+
             gameState = GameState.LevelComplete;
             if (ScreenManager.Instace)
                 ScreenManager.Instace.LevelCompleteDialog.Show(true);
         }
+    }
+
+    private void OnDisable()
+    {
+        PlayerPrefs.SetInt("bestScore", bestScore);
+    }
+    private void OnEnable()
+    {
+        bestScore = PlayerPrefs.GetInt("bestScore");
     }
 }

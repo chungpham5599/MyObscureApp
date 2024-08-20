@@ -29,7 +29,7 @@ public class ScreenManager : MonoBehaviour
         button2x2.onClick.AddListener(() =>
         {
             changeScreen(true);
-            GameManager.Instace.GenerateLevel(2, 2, 20);
+            GameManager.Instace.GenerateLevel(2, 2, 2);
         });
         button3x4.onClick.RemoveAllListeners();
         button3x4.onClick.AddListener(() =>
